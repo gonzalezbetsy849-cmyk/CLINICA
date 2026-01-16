@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Sistema Profesional IMC</title>
+<title>Sistema Profesional de IMC</title>
 
 <style>
 *{
@@ -20,15 +20,15 @@ body{
 h1{
     text-align:center;
     color:#004E64;
-    margin-bottom:20px;
-    font-size:2.5em;
+    margin-bottom:25px;
+    font-size:2.6em;
 }
 
 .form{
     width:65%;
     margin:auto;
     background:#fff;
-    padding:30px;
+    padding:35px;
     border-radius:20px;
     box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
@@ -48,7 +48,7 @@ h1{
 }
 
 button{
-    margin-top:15px;
+    margin-top:18px;
     padding:12px 25px;
     background:#00C897;
     border:none;
@@ -64,14 +64,14 @@ button:hover{
 
 table{
     width:95%;
-    margin:40px auto;
+    margin:45px auto;
     border-collapse:collapse;
     background:#fff;
     box-shadow:0 5px 20px rgba(0,0,0,.2);
 }
 
 th,td{
-    padding:10px;
+    padding:12px;
     text-align:center;
     border:1px solid #ccc;
 }
@@ -81,37 +81,46 @@ th{
 }
 
 .recomendacion{
-    width:80%;
-    margin:30px auto;
+    width:85%;
+    margin:40px auto;
     background:#fff;
-    padding:25px;
+    padding:30px;
     border-radius:20px;
     box-shadow:0 5px 20px rgba(0,0,0,.2);
-    text-align:center;
 }
 
-.recomendacion img{
-    width:200px;
-    margin:15px 0;
+.recomendacion h2{
+    color:#004E64;
+    margin-bottom:15px;
+}
+
+.recomendacion ul{
+    text-align:left;
+    margin-top:15px;
+}
+
+.recomendacion li{
+    margin-bottom:10px;
+    line-height:1.6;
 }
 
 .links{
     text-align:center;
-    margin-top:30px;
+    margin-top:35px;
 }
 
 .links a{
     display:block;
     margin:8px;
     color:#006D5B;
-    font-weight:bold;
+    font-weight:600;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Sistema Inteligente de IMC</h1>
+<h1>Sistema Inteligente de Evaluación IMC</h1>
 
 <div class="form">
 <input type="hidden" id="editIndex">
@@ -125,20 +134,11 @@ th{
 <label class="form_label">Apellido</label>
 <input class="form_input" id="apellido">
 
-<label class="form_label">Fecha</label>
-<input class="form_input" id="fecha">
-
 <label class="form_label">Peso (kg)</label>
 <input class="form_input" id="peso" type="number">
 
 <label class="form_label">Altura (m)</label>
 <input class="form_input" id="altura" type="number" step="0.01">
-
-<label class="form_label">Correo</label>
-<input class="form_input" id="correo">
-
-<label class="form_label">Género</label>
-<input class="form_input" id="genero">
 
 <button onclick="guardar()">GUARDAR / ACTUALIZAR</button>
 </div>
@@ -155,16 +155,16 @@ th{
 
 <div class="recomendacion" id="recomendacion" style="display:none;">
 <h2 id="tituloRec"></h2>
-<img id="imgIMC">
-<p id="textoRec"></p>
+<p id="textoBase"></p>
+<ul id="listaRec"></ul>
 </div>
 
 <div class="links">
-<h3>🔗 Recursos de Ayuda</h3>
+<h3>🔗 Recursos de apoyo confiables</h3>
 <a href="https://www.cdc.gov/healthyweight/spanish/index.html" target="_blank">✔ CDC – Peso saludable</a>
 <a href="https://www.imss.gob.mx/salud-en-linea/nutricion" target="_blank">✔ IMSS – Nutrición</a>
-<a href="https://www.healthline.com/nutrition/how-to-gain-weight" target="_blank">✔ Subir de peso saludablemente</a>
-<a href="https://www.mayoclinic.org/healthy-lifestyle/weight-loss" target="_blank">✔ Bajar de peso – Mayo Clinic</a>
+<a href="https://www.healthline.com/nutrition/how-to-gain-weight" target="_blank">✔ Cómo subir de peso saludablemente</a>
+<a href="https://www.mayoclinic.org/healthy-lifestyle/weight-loss" target="_blank">✔ Guía para bajar de peso – Mayo Clinic</a>
 </div>
 
 <script>
@@ -228,24 +228,51 @@ function eliminar(i){
 }
 
 function mostrarRecomendacion(imc){
-    let t=document.getElementById("tituloRec");
-    let txt=document.getElementById("textoRec");
-    let img=document.getElementById("imgIMC");
     recomendacion.style.display="block";
+    listaRec.innerHTML="";
 
     if(imc<18.5){
-        t.innerText="Bajo peso";
-        txt.innerText="Se recomienda aumentar calorías saludables y proteína.";
-        img.src="https://upload.wikimedia.org/wikipedia/commons/1/1c/BMI_underweight.svg";
+        tituloRec.innerText="Resultado: Bajo peso";
+        textoBase.innerText="Tu IMC indica que estás por debajo del rango saludable. Es importante mejorar tu nutrición de forma segura.";
+        agregar([
+            "Aumenta la ingesta de calorías saludables de forma gradual.",
+            "Incluye proteínas de calidad: pollo, pescado, huevo y legumbres.",
+            "Consume grasas buenas como aguacate, frutos secos y aceite de oliva.",
+            "Realiza ejercicio de fuerza para ganar masa muscular.",
+            "Mantén horarios regulares de comida.",
+            "Consulta a un nutricionista para un plan personalizado."
+        ]);
     }else if(imc<25){
-        t.innerText="Peso saludable";
-        txt.innerText="Excelente, mantén una dieta balanceada y ejercicio regular.";
-        img.src="https://upload.wikimedia.org/wikipedia/commons/5/51/BMI_normal.svg";
+        tituloRec.innerText="Resultado: Peso saludable";
+        textoBase.innerText="Tu IMC se encuentra dentro del rango recomendado. Continúa con hábitos saludables.";
+        agregar([
+            "Mantén una alimentación balanceada.",
+            "Realiza actividad física al menos 150 minutos por semana.",
+            "Evita el exceso de azúcares y alimentos ultraprocesados.",
+            "Hidrátate adecuadamente.",
+            "Duerme entre 7 y 8 horas diarias.",
+            "Realiza chequeos médicos periódicos."
+        ]);
     }else{
-        t.innerText="Sobrepeso";
-        txt.innerText="Incrementa actividad física y controla consumo calórico.";
-        img.src="https://upload.wikimedia.org/wikipedia/commons/3/38/BMI_overweight.svg";
+        tituloRec.innerText="Resultado: Sobrepeso";
+        textoBase.innerText="Tu IMC indica un peso por encima del rango saludable. Se recomienda adoptar cambios progresivos.";
+        agregar([
+            "Reduce el consumo de azúcares y grasas saturadas.",
+            "Aumenta el consumo de frutas, verduras y fibra.",
+            "Realiza actividad física aeróbica regularmente.",
+            "Controla las porciones de comida.",
+            "Evita bebidas azucaradas.",
+            "Busca orientación profesional si es necesario."
+        ]);
     }
+}
+
+function agregar(arr){
+    arr.forEach(t=>{
+        let li=document.createElement("li");
+        li.innerText=t;
+        listaRec.appendChild(li);
+    });
 }
 
 function limpiar(){
